@@ -22,8 +22,8 @@ local function toggle_neotree()
  vim.cmd('Neotree show')
 end
 
-vim.keymap.set('n', '<leader>to', '<cmd>Neotree show<CR>')
-vim.keymap.set('n', '<leader>tq', '<cmd>Neotree close<CR>')
+-- vim.keymap.set('n', '<leader>to', '<cmd>Neotree show<CR>')
+-- vim.keymap.set('n', '<leader>tq', '<cmd>Neotree close<CR>')
 vim.keymap.set("n", "<leader>cp", copy_file_path_to_clipboard)
 
 
@@ -133,7 +133,95 @@ vim.api.nvim_set_keymap('v', '<C-j>', ":m '>+1<CR>gv=gv", opts)
 vim.api.nvim_set_keymap('n', '<C-j>', "<cmd>m .+1<CR>==", opts)
 
 
+
+--------------------------------------------------------
 -- 重新绑定 C-o 到 Alt-h
 vim.api.nvim_set_keymap('n', '<A-h>', '<C-o>', { noremap = true, silent = true })
 -- 重新绑定 C-i 到 Alt-l
 vim.api.nvim_set_keymap('n', '<A-l>', '<C-i>', { noremap = true, silent = true })
+--------------------------------------------------------
+
+vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
+vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
+vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
+vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
+vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() end)
+vim.keymap.set('n', '<Leader>B', function() require('dap').set_breakpoint() end)
+vim.keymap.set('n', '<Leader>lp', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
+vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end)
+vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end)
+
+
+vim.keymap.del('n', '<C-/>')
+vim.keymap.del('n', '<C-_>')
+vim.keymap.del('n', '<leader>ft')
+vim.keymap.set('n', '<C-/>', '<cmd>ToggleTerm size=25<CR>')
+vim.keymap.set('n', '<C-_>', '<cmd>ToggleTerm size=25<CR>')
+--------------------------------------------------------
+local function switch_to_previous_buffer()
+  -- Get the name of the previous buffer
+  local prev_bufname = vim.fn.bufname('#')
+
+  -- Check if the previous buffer is valid
+  if prev_bufname ~= '' then
+    -- Execute the buffer switch
+    vim.cmd('b#')
+
+    -- Reload the buffer to ensure it is in the buffer list
+    vim.cmd('edit ' .. prev_bufname)
+  else
+    print("No previous buffer to switch to.")
+  end
+end
+
+vim.keymap.set('n', '<leader>b#', switch_to_previous_buffer, { noremap = true, silent = true, desc="Reopen the closed buffer" })
+--------------------------------------------------------
+local function DiffFormat()
+
+  local ignore_filetypes = { "lua" }
+  if vim.tbl_contains(ignore_filetypes, vim.bo.filetype) then
+    vim.notify("range formatting for " .. vim.bo.filetype .. " not working properly.")
+    return
+  end
+
+  local hunks = require("gitsigns").get_hunks()
+  if hunks == nil then
+    return
+  end
+
+  local format = require("conform").format
+
+  local function format_range()
+    if next(hunks) == nil then
+      vim.notify("done formatting git hunks", "info", { title = "formatting" })
+      return
+    end
+    local hunk = nil
+    while next(hunks) ~= nil and (hunk == nil or hunk.type == "delete") do
+      hunk = table.remove(hunks)
+    end
+
+    if hunk ~= nil and hunk.type ~= "delete" then
+      local start = hunk.added.start
+      local last = start + hunk.added.count
+      -- nvim_buf_get_lines uses zero-based indexing -> subtract from last
+      local last_hunk_line = vim.api.nvim_buf_get_lines(0, last - 2, last - 1, true)[1]
+      local range = { start = { start, 0 }, ["end"] = { last - 1, last_hunk_line:len() } }
+      format({ range = range, async = true, lsp_fallback = true }, function()
+        vim.defer_fn(function()
+          format_range()
+        end, 1)
+      end)
+    end
+  end
+
+  format_range()
+end
+
+local function Format()
+  local conform = require('conform')
+  conform.format()
+end
+
+vim.api.nvim_create_user_command('DiffFormat', DiffFormat, { nargs = 0, desc = "Diff Format Current File"})
+vim.api.nvim_create_user_command('Format', Format, { nargs = 0, desc = "Format Current File"})

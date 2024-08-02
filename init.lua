@@ -1,6 +1,6 @@
 require("config.lazy")
 vim.opt.relativenumber = false
-vim.opt.mouse = ""
+-- vim.opt.mouse = ""
 
 ------------------------------------------------------------------------------
 vim.g.clipboard = {
@@ -39,4 +39,4 @@ vim.g.lazyvim_python_ruff = "ruff"
 
 --local cmp = require("cmp")
 -- cmp.setup({auto_brackets={}})
-
+require("config.dap")

@@ -189,6 +189,28 @@ return {
     },
   },
   { "mfussenegger/nvim-dap" },
+  {"mfussenegger/nvim-dap-python"},
+  {
+    "hedyhli/outline.nvim",
+    lazy = true,
+    cmd = { "Outline", "OutlineOpen" },
+    keys = { -- Example mapping to toggle outline
+      { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
+    },
+    opts = {
+    -- Your setup opts here
+    },
+  },
+  {'akinsho/toggleterm.nvim', version = "*", config = true},
+  {
+    "stevearc/conform.nvim",
+      optional = true,
+      opts = {
+        formatters_by_ft = {
+          ["python"] = { "black", "isort"},
+        },
+      },
+  }
   -- {
   --   "xiantang/darcula-dark.nvim"
   -- },

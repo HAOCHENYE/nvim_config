@@ -16,5 +16,5 @@ vim.g.lazyvim_python_ruff_lsp = ""
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.foldmethod='indent'
-
+vim.opt.colorcolumn='120'
 
