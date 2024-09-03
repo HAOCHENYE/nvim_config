@@ -152,12 +152,18 @@ return {
       },
     },
   },
-  -- {
-  --     "mfussenegger/nvim-lint",
-  --     opts = {
-  --       linters_by_ft = { python = { 'mypy' }}
-  --     }
-  -- },
+  {
+    "mfussenegger/nvim-lint",
+    opts = {
+        linters_by_ft = { python = { 'mypy', 'flake8' }}
+      },
+    init = function()
+      local mypy = require("lint").get_namespace("mypy")
+      local flake8 = require("lint").get_namespace("flake8")
+      vim.diagnostic.config({ virtual_text = false, sources = true }, mypy)
+      vim.diagnostic.config({ virtual_text = false, sources = true }, flake8)
+    end
+  },
   {
     "mg979/vim-visual-multi",
     init = function()
@@ -208,9 +214,27 @@ return {
       opts = {
         formatters_by_ft = {
           ["python"] = { "black", "isort"},
+          ["json"] = { "fixjson"}
         },
       },
-  }
+  },
+  {"jesseduffield/lazygit"},
+  {
+    "neovim/nvim-lspconfig",
+    ---@class PluginLspOpts
+    opts = {
+      ---@type lspconfig.options
+      servers = {
+        -- pyright will be automatically installed with mason and loaded with lspconfig
+        pyright = {
+          handlers = {
+            ["textDocument/publishDiagnostics"] = function() end,
+          },
+        },
+      },
+    },
+  },
+}
   -- {
   --   "xiantang/darcula-dark.nvim"
   -- },
@@ -220,7 +244,7 @@ return {
   --     colorscheme = "darcula-dark",
   --   },
   -- }
-}
+-- }
 -- since this is just an example spec, don't actually load anything here and return an empty spec
 -- stylua: ignore
 -- if true then return {} end

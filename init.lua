@@ -26,17 +26,4 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 ------------------------------------------------------------------------------
 
-
--- local cmp = require('cmp')
--- local config = cmp.get_config()
-
--- config.mapping['<Tab>'] = LazyVim.cmp.confirm({ select = true })
--- cmp.setup(config)
-vim.g.lazyvim_python_lsp = "pyright"
--- Set to "ruff_lsp" to use the old LSP implementation version.
-vim.g.lazyvim_python_ruff = "ruff"
-
-
---local cmp = require("cmp")
--- cmp.setup({auto_brackets={}})
 require("config.dap")

@@ -18,6 +18,13 @@ end
 
 vim.keymap.set("n", "<leader>cp", copy_file_path_to_clipboard)
 
+local function copy_file_name_to_clipboard()
+  local file_path = vim.fn.expand('%:t')
+  vim.fn.setreg('+', file_path)
+  print("File filename copied to clipboard: " .. file_path)
+end
+vim.keymap.set("n", "<leader>cP", copy_file_name_to_clipboard)
+
 local function toggle_neotree()
  vim.cmd('Neotree show')
 end
@@ -49,7 +56,7 @@ end
 -- vim.keymap.set("n", "<leader>wd", toggle_diff_mode)
 
 -- 将 <leader>bd 映射为关闭当前 buffer 而不关闭窗口
-vim.api.nvim_set_keymap('n', '<leader>bd', ':bp | bd #<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>bd', ':b# | bd #<CR>', { noremap = true, silent = true })
 
 
 -- Fzflua 相关的配置
@@ -110,12 +117,11 @@ vim.keymap.set("n", "<leader>mbl", move_buffer_to_left_window)
 vim.keymap.set("n", "<leader>mbr", move_buffer_to_right_window)
 -------------------------------- 把 buffer 移动到左边窗口 ------------------------------
 
-vim.keymap.set('v', '<Tab>', '>gv')
-vim.keymap.set('v', '<S-Tab>', '<gv')
-vim.keymap.set('n', '<Tab>', '>>')
-vim.keymap.set('n', '<S-Tab>', '<<')
-vim.keymap.set('n', '<leader>po', '<cmd>put _<cr>i')
-  
+-- vim.keymap.set('v', '<Tab>', '>gv')
+-- vim.keymap.set('v', '<S-Tab>', '<gv')
+-- vim.keymap.set('n', '<Tab>', '>>')
+-- vim.keymap.set('n', '<S-Tab>', '<<')
+
 --------------------------------------------------------
 -- 解绑 <Alt-j> 快捷键
 local opts = { noremap = true, silent = true }
@@ -136,9 +142,9 @@ vim.api.nvim_set_keymap('n', '<C-j>', "<cmd>m .+1<CR>==", opts)
 
 --------------------------------------------------------
 -- 重新绑定 C-o 到 Alt-h
-vim.api.nvim_set_keymap('n', '<A-h>', '<C-o>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<A-h>', '<C-o>', { noremap = true, silent = true })
 -- 重新绑定 C-i 到 Alt-l
-vim.api.nvim_set_keymap('n', '<A-l>', '<C-i>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<A-l>', '<C-i>', { noremap = true, silent = true })
 --------------------------------------------------------
 
 vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
