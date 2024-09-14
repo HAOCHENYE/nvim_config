@@ -176,7 +176,22 @@ return {
       }
     end,
   },
-  { "sindrets/diffview.nvim" },
+  { 
+    "sindrets/diffview.nvim",
+    -- init = function ()
+    --     vim.api.nvim_set_hl(0, 'DiffviewDiffAddAsDelete', { bg = "#431313" })
+    --     vim.api.nvim_set_hl(0, 'DiffDelete', { bg = "#FF0000", fg = "#FF0000" })
+    --     vim.api.nvim_set_hl(0, 'DiffviewDiffDelete', { bg = "#FF0000", fg = "#FF0000" })
+    --     vim.api.nvim_set_hl(0, 'DiffAdd', { bg = "#142a03" })
+    --     vim.api.nvim_set_hl(0, 'DiffChange', { bg = "#3B3307" })
+    --     vim.api.nvim_set_hl(0, 'DiffText', { bg = "#4D520D" })
+    -- end,
+    opts = {
+      enhanced_diff_hl = true,
+      -- DiffDelete = { fg = "#FF0000", bg = "#FF0000", style = "reverse" },
+      -- DiffviewDiffDelete = { fg = "#FF0000", bg = "#FF0000", style = "reverse" },
+    }
+  },
   {
     "hrsh7th/nvim-cmp",
     opts = function(_, opts)
