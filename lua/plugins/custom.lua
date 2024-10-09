@@ -259,7 +259,20 @@ return {
     -- if markdown-preview does not work, maybe need to call `call mkdp#util#install` again in nvim
     build = function() vim.fn["mkdp#util#install"]() end,
   },
-
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    dependencies = {
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+    },
+    build = "make tiktoken", -- Only on MacOS or Linux
+    opts = {
+      debug = true, -- Enable debugging
+      -- See Configuration section for rest
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
 }
   -- {
   --   "xiantang/darcula-dark.nvim"
