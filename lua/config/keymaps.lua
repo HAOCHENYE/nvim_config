@@ -231,3 +231,14 @@ end
 
 vim.api.nvim_create_user_command('DiffFormat', DiffFormat, { nargs = 0, desc = "Diff Format Current File"})
 vim.api.nvim_create_user_command('Format', Format, { nargs = 0, desc = "Format Current File"})
+
+
+local function toggle_wrap()
+    if vim.wo.wrap then
+        vim.wo.wrap = false
+    else
+        vim.wo.wrap = true
+    end
+end
+
+vim.keymap.set('n', '<A-z>', toggle_wrap)
