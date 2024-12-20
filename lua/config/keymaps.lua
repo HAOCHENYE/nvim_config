@@ -160,6 +160,7 @@ vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end)
 
 vim.keymap.del('n', '<C-/>')
 vim.keymap.del('n', '<C-_>')
+vim.keymap.del('n', '<leader>wd')  -- 关闭 leader wd 关闭 window 的功能
 vim.keymap.del('n', '<leader>ft')
 vim.keymap.set('n', '<C-/>', '<cmd>ToggleTerm size=25<CR>')
 vim.keymap.set('n', '<C-_>', '<cmd>ToggleTerm size=25<CR>')
@@ -242,3 +243,36 @@ local function toggle_wrap()
 end
 
 vim.keymap.set('n', '<A-z>', toggle_wrap)
+vim.keymap.set('n', '<leader>tf', "<cmd>tabnext<CR>")
+vim.keymap.set('n', '<leader>tb', "<cmd>tabprevious<CR>")
+vim.keymap.set('n', '<leader>tc', "<cmd>tabclose<CR>")
+vim.keymap.set('n', '<leader>tn', "<cmd>tabnew<CR>")
+
+-- 在你的 init.lua 或相关配置文件中添加以下内容
+vim.api.nvim_set_keymap('v', '<leader>ss', [[:lua SearchInVisualSelection()<CR>]], { noremap = true, silent = true })
+
+-- 定义 SearchInVisualSelection 函数
+function SearchInVisualSelection()
+  -- 获取 Visual Mode 下选中的文本
+  local start_pos = vim.fn.getpos("'<")  -- 获取选中区域的起始位置
+  local end_pos = vim.fn.getpos("'>")    -- 获取选中区域的结束位置
+  local selected_text = vim.fn.getreg('v')  -- 获取选中的文本内容
+
+  -- 创建一个弹窗输入框 (这是一种非阻塞方式)
+  vim.ui.input({
+    prompt = 'Enter search term: ',
+    default = selected_text,
+    completion = "word",
+  }, function(input)
+    -- 如果用户输入了内容
+    if input and input ~= "" then
+      -- 恢复原来的 Visual 模式选中状态
+      vim.fn.setpos("'<", start_pos)
+      vim.fn.setpos("'>", end_pos)
+
+      -- 执行搜索，并使用 \%V 限制搜索范围到选中的区域
+      vim.fn.search('\\%V' .. vim.fn.escape(input, "/\\"))
+    end
+  end)
+end
+

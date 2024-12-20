@@ -31,3 +31,19 @@ dap_python.setup("python")
 --         -- },
 --     }
 -- }
+--
+--
+-- vim.cmd('command! DapSwitchSession lua DapSwitchSession()')
+--
+-- function DapSwitchSession()
+--   local dap = require("dap")
+--   local sessions = dap.sessions()
+--   vim.print(sessions)
+--   for _, s in pairs(sessions["children"]) do
+--       if not s.closed then
+--         print("set session:", vim.inspect(s))
+--         dap.set_session(s)
+--         return
+--     end
+--   end
+-- end

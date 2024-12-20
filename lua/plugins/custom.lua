@@ -235,21 +235,6 @@ return {
   },
   {"jesseduffield/lazygit"},
   {
-    "neovim/nvim-lspconfig",
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- pyright will be automatically installed with mason and loaded with lspconfig
-        pyright = {
-          handlers = {
-            ["textDocument/publishDiagnostics"] = function() end,
-          },
-        },
-      },
-    },
-  },
-  {
     "iamcco/markdown-preview.nvim",
     init = function()
         vim.g.mkdp_echo_preview_url = 1
@@ -273,6 +258,74 @@ return {
     },
     -- See Commands section for default commands if you want to lazy load on them
   },
+  {
+    "neovim/nvim-lspconfig",
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    event = "InsertEnter",
+    config = function()
+      require('copilot').setup({
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          keymap = {
+            accept = "<M-l>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<C-]>",
+          }
+        },
+        -- 设置高亮颜色
+        vim.api.nvim_set_hl(0, 'CopilotSuggestion', { fg = '#F0E68C' })
+      })
+    end,
+  },
+  { "zbirenbaum/copilot-cmp", enabled = false }
+  --   opts = {
+  --     servers = {
+  --       pyright = {
+  --         settings = {
+  --           python = {
+  --             analysis = {
+  --               -- 限制文件扫描
+  --               -- autoSearchPaths = false,  -- 禁用自动搜索路径
+  --               -- useLibraryCodeForTypes = true,  -- 仅使用库代码进行类型推断
+  --               -- diagnosticMode = "openFilesOnly",  -- 只分析打开的文件
+  --               diagnosticMode = "workspace",  -- 只分析打开的文件
+  --             }
+  --           }
+  --         },
+  --         root_dir = function(fname)
+  --           local root = require('lspconfig.util').root_pattern(
+  --             'pyproject.toml', 
+  --             'setup.py', 
+  --             'setup.cfg', 
+  --             'requirements.txt', 
+  --             '.git'
+  --           )(fname)
+  --
+  --           -- 如果没找到，直接返回文件所在目录，不再向上遍历
+  --           if not root then
+  --             return vim.fn.fnamemodify(fname, ":p:h")
+  --           end
+  --
+  --           return root
+  --         end
+  --       }
+  --     }
+  --   }
+  -- },
+  -- {
+  --   "benlubas/molten-nvim",
+  --   version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
+  --   build = ":UpdateRemotePlugins",
+  --   init = function()
+  --       -- this is an example, not a default. Please see the readme for more configuration options
+  --       vim.g.molten_output_win_max_height = 12
+  --   end,
 }
   -- {
   --   "xiantang/darcula-dark.nvim"

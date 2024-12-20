@@ -25,6 +25,7 @@ vim.opt.tabstop = 4
 
 -- 自动缩进时使用的空格数
 vim.opt.softtabstop = 4
+vim.opt.jumpoptions = "stack"
 ------------------------------------------------------------------------------
 
 require("config.dap")
