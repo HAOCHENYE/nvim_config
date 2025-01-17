@@ -155,14 +155,22 @@ return {
   {
     "mfussenegger/nvim-lint",
     opts = {
-        linters_by_ft = { python = { 'mypy', 'flake8' }}
-      },
+      linters_by_ft = { python = { "mypy", "flake8" } },
+    },
     init = function()
       local mypy = require("lint").get_namespace("mypy")
       local flake8 = require("lint").get_namespace("flake8")
-      vim.diagnostic.config({ virtual_text = false, sources = true }, mypy)
-      vim.diagnostic.config({ virtual_text = false, sources = true }, flake8)
-    end
+      local new_args = {
+        "--max-line-length=119",
+      }
+      local args = require("lint").linters.flake8.args
+      for _, arg in ipairs(new_args) do
+        table.insert(args, arg)
+      end
+
+      vim.diagnostic.config({ virtual_text = false, float = { source = true } }, mypy)
+      vim.diagnostic.config({ virtual_text = false, float = { source = true } }, flake8)
+    end,
   },
   {
     "mg979/vim-visual-multi",
@@ -176,7 +184,7 @@ return {
       }
     end,
   },
-  { 
+  {
     "sindrets/diffview.nvim",
     -- init = function ()
     --     vim.api.nvim_set_hl(0, 'DiffviewDiffAddAsDelete', { bg = "#431313" })
@@ -190,7 +198,7 @@ return {
       enhanced_diff_hl = true,
       -- DiffDelete = { fg = "#FF0000", bg = "#FF0000", style = "reverse" },
       -- DiffviewDiffDelete = { fg = "#FF0000", bg = "#FF0000", style = "reverse" },
-    }
+    },
   },
   {
     "hrsh7th/nvim-cmp",
@@ -219,30 +227,35 @@ return {
       { "<leader>o", "<cmd>Outline<CR>", desc = "Toggle outline" },
     },
     opts = {
-    -- Your setup opts here
+      -- Your setup opts here
     },
   },
-  {'akinsho/toggleterm.nvim', version = "*", config = true},
+  { "akinsho/toggleterm.nvim", version = "*", config = true },
   {
     "stevearc/conform.nvim",
-      optional = true,
-      opts = {
-        formatters_by_ft = {
-          ["python"] = { "black", "isort"},
-          ["json"] = { "fixjson"}
-        },
+    dependencies = {
+      "rhysd/fixjson",
+    },
+    optional = true,
+    opts = {
+      formatters_by_ft = {
+        ["python"] = { "black", "isort" },
+        ["json"] = { "fixjson" },
       },
+    },
   },
-  {"jesseduffield/lazygit"},
+  { "jesseduffield/lazygit" },
   {
     "iamcco/markdown-preview.nvim",
     init = function()
-        vim.g.mkdp_echo_preview_url = 1
+      vim.g.mkdp_echo_preview_url = 1
     end,
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
     -- if markdown-preview does not work, maybe need to call `call mkdp#util#install` again in nvim
-    build = function() vim.fn["mkdp#util#install"]() end,
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
@@ -260,12 +273,18 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
+    opts = {
+      diagnostics = {
+        virtual_text = false,
+        float = { source = true },
+      },
+    },
   },
   {
     "zbirenbaum/copilot.lua",
     event = "InsertEnter",
     config = function()
-      require('copilot').setup({
+      require("copilot").setup({
         suggestion = {
           enabled = true,
           auto_trigger = true,
@@ -276,56 +295,14 @@ return {
             next = "<M-]>",
             prev = "<M-[>",
             dismiss = "<C-]>",
-          }
+          },
         },
         -- 设置高亮颜色
-        vim.api.nvim_set_hl(0, 'CopilotSuggestion', { fg = '#F0E68C' })
+        vim.api.nvim_set_hl(0, "CopilotSuggestion", { fg = "#F0E68C" }),
       })
     end,
   },
-  { "zbirenbaum/copilot-cmp", enabled = false }
-  --   opts = {
-  --     servers = {
-  --       pyright = {
-  --         settings = {
-  --           python = {
-  --             analysis = {
-  --               -- 限制文件扫描
-  --               -- autoSearchPaths = false,  -- 禁用自动搜索路径
-  --               -- useLibraryCodeForTypes = true,  -- 仅使用库代码进行类型推断
-  --               -- diagnosticMode = "openFilesOnly",  -- 只分析打开的文件
-  --               diagnosticMode = "workspace",  -- 只分析打开的文件
-  --             }
-  --           }
-  --         },
-  --         root_dir = function(fname)
-  --           local root = require('lspconfig.util').root_pattern(
-  --             'pyproject.toml', 
-  --             'setup.py', 
-  --             'setup.cfg', 
-  --             'requirements.txt', 
-  --             '.git'
-  --           )(fname)
-  --
-  --           -- 如果没找到，直接返回文件所在目录，不再向上遍历
-  --           if not root then
-  --             return vim.fn.fnamemodify(fname, ":p:h")
-  --           end
-  --
-  --           return root
-  --         end
-  --       }
-  --     }
-  --   }
-  -- },
-  -- {
-  --   "benlubas/molten-nvim",
-  --   version = "^1.0.0", -- use version <2.0.0 to avoid breaking changes
-  --   build = ":UpdateRemotePlugins",
-  --   init = function()
-  --       -- this is an example, not a default. Please see the readme for more configuration options
-  --       vim.g.molten_output_win_max_height = 12
-  --   end,
+  { "zbirenbaum/copilot-cmp", enabled = false },
 }
   -- {
   --   "xiantang/darcula-dark.nvim"
