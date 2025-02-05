@@ -218,7 +218,7 @@ return {
     },
   },
   { "mfussenegger/nvim-dap" },
-  {"mfussenegger/nvim-dap-python"},
+  { "mfussenegger/nvim-dap-python" },
   {
     "hedyhli/outline.nvim",
     lazy = true,
@@ -303,6 +303,15 @@ return {
     end,
   },
   { "zbirenbaum/copilot-cmp", enabled = false },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = {
+      filesystem = {
+        watch_dir = false,
+        enable_refresh_on_write = false,
+      },
+    },
+  },
 }
   -- {
   --   "xiantang/darcula-dark.nvim"

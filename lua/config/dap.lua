@@ -1,7 +1,11 @@
 local dap_python = require("dap-python")
 dap_python.setup("python")
 
+
 local dap = require("dap")
+-- Configure attach mode
+dap.configurations.python[3]["justMyCode"] = false
+
 local function list_sessions()
   local sessions = dap.sessions()
   local session_list = {}

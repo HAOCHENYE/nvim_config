@@ -1,6 +1,6 @@
 require("config.lazy")
 vim.opt.relativenumber = false
-vim.opt.number = false
+vim.opt.number = true
 -- vim.opt.mouse = ""
 
 ------------------------------------------------------------------------------
