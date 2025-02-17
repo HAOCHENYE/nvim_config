@@ -18,4 +18,4 @@ vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.foldmethod='indent'
 vim.opt.colorcolumn='120'
-
+vim.g.ai_cmp = false

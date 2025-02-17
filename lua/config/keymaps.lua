@@ -146,18 +146,6 @@ vim.api.nvim_set_keymap('n', '<C-j>', "<cmd>m .+1<CR>==", opts)
 -- 重新绑定 C-i 到 Alt-l
 -- vim.api.nvim_set_keymap('n', '<A-l>', '<C-i>', { noremap = true, silent = true })
 --------------------------------------------------------
-
-vim.keymap.set('n', '<F5>', function() require('dap').continue() end)
-vim.keymap.set('n', '<F10>', function() require('dap').step_over() end)
-vim.keymap.set('n', '<F11>', function() require('dap').step_into() end)
-vim.keymap.set('n', '<F12>', function() require('dap').step_out() end)
-vim.keymap.set('n', '<Leader>b', function() require('dap').toggle_breakpoint() end)
-vim.keymap.set('n', '<Leader>B', function() require('dap').set_breakpoint() end)
-vim.keymap.set('n', '<Leader>lp', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
-vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end)
-vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end)
-
-
 vim.keymap.del('n', '<C-/>')
 vim.keymap.del('n', '<C-_>')
 vim.keymap.del('n', '<leader>wd')  -- 关闭 leader wd 关闭 window 的功能
