@@ -132,11 +132,11 @@ vim.api.nvim_del_keymap('v', '<A-k>')  -- 可视模式
 
 
 
-vim.api.nvim_set_keymap('v', '<C-k>', ":m '<-2<CR>gv=gv", opts)
-vim.api.nvim_set_keymap('n', '<C-k>', "<cmd>m .-2<CR>==", opts)
+vim.api.nvim_set_keymap('v', '<M-k>', ":m '<-2<CR>gv=gv", opts)
+vim.api.nvim_set_keymap('n', '<M-k>', "<cmd>m .-2<CR>==", opts)
  
-vim.api.nvim_set_keymap('v', '<C-j>', ":m '>+1<CR>gv=gv", opts)
-vim.api.nvim_set_keymap('n', '<C-j>', "<cmd>m .+1<CR>==", opts)
+vim.api.nvim_set_keymap('v', '<M-j>', ":m '>+1<CR>gv=gv", opts)
+vim.api.nvim_set_keymap('n', '<M-j>', "<cmd>m .+1<CR>==", opts)
 
 
 

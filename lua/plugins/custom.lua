@@ -302,19 +302,29 @@ return {
     },
   },
   {
-    'saghen/blink.cmp',
+    "saghen/blink.cmp",
     -- build = "cargo build --release",
     opts = {
       keymap = {
-        ['<S-Tab>'] = { 'select_prev', 'fallback' },
-        ['<Tab>'] = { 'select_next', 'fallback' },
-        ['<CR>'] = { 'select_and_accept', 'fallback' },
-      }
-    }
+        ["<C-k>"] = { "select_prev", "fallback" },
+        ["<C-j>"] = { "select_next", "fallback" },
+        ["<Tab>"] = { "select_and_accept", "fallback"},
+      },
+    },
   },
   {
-     "blink-cmp-copilot", enabled = false
-  }
+    "giuxtaposition/blink-cmp-copilot",
+    enabled = false,
+  },
+  {
+    "ibhagwan/fzf-lua",
+    opts = {
+      lsp_references = {
+        jump_to_single_result = true,
+        silent = true,
+      },
+    },
+  },
 }
   -- {
   --   "xiantang/darcula-dark.nvim"
