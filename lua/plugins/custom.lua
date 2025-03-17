@@ -208,6 +208,8 @@ return {
   },
   { "mfussenegger/nvim-dap" },
   { "mfussenegger/nvim-dap-python" },
+  { "rcarriga/nvim-dap-ui"},
+  { "theHamsta/nvim-dap-virtual-text", enabled=false},
   {
     "hedyhli/outline.nvim",
     lazy = true,
@@ -238,6 +240,7 @@ return {
     "iamcco/markdown-preview.nvim",
     init = function()
       vim.g.mkdp_echo_preview_url = 1
+      vim.g.mkdp_port = "8879"
     end,
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
@@ -262,18 +265,23 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    opts = {
-      diagnostics = {
-        virtual_text = false,
-        float = { source = true },
-      },
-    },
+    opts = function(_, opts)
+       local keys = require("lazyvim.plugins.lsp.keymaps").get()
+      -- disable signature help in insert mode
+       keys[#keys + 1] = { "<C-k>", false, mode = "i" }
+       opts.diagnostics.virtual_text = false
+       opts.diagnostics.float = { source = true }
+       return opts
+    end,
   },
   {
     "zbirenbaum/copilot.lua",
     event = "InsertEnter",
     config = function()
       require("copilot").setup({
+        filetypes = {
+          markdown = true,
+        },
         suggestion = {
           enabled = true,
           auto_trigger = true,
@@ -308,7 +316,7 @@ return {
       keymap = {
         ["<C-k>"] = { "select_prev", "fallback" },
         ["<C-j>"] = { "select_next", "fallback" },
-        ["<Tab>"] = { "select_and_accept", "fallback"},
+        ["<Tab>"] = { "select_and_accept", "fallback" },
       },
     },
   },
@@ -322,6 +330,43 @@ return {
       lsp_references = {
         jump_to_single_result = true,
         silent = true,
+      },
+    },
+  },
+  {
+    "AckslD/swenv.nvim",
+    opts = {
+      get_venvs = function(venvs_path)
+        -- The implementation in swenv.api has some issues. This is a temp fix
+        local venvs = require("swenv.api").get_venvs(venvs_path)
+        local scan_dir = require("plenary.scandir").scan_dir
+        local Path = require("plenary.path")
+        local conda_exe = vim.fn.getenv("CONDA_EXE")
+        if conda_exe ~= vim.NIL then
+          local conda_base = (Path:new(conda_exe):parent():parent() / "envs").filename
+          local paths = scan_dir(conda_base, { depth = 1, only_dirs = true, silent = true })
+          for _, path in ipairs(paths) do
+            table.insert(venvs, {
+              name = Path:new(path):make_relative(conda_base),
+              path = path,
+              source = "conda",
+            })
+          end
+        end
+        return venvs
+      end,
+      post_set_venv = function(venv)
+        -- Restart LSP to reload the new venv
+        vim.cmd("LspRestart")
+      end,
+    },
+    keys = {
+      {
+        "<leader>se",
+        function()
+          require("swenv.api").pick_venv()
+        end,
+        desc = "Switch Python Virtual Environment",
       },
     },
   },
