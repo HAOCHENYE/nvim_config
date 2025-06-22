@@ -3,6 +3,7 @@
     "lazyvim.plugins.extras.ai.copilot",
     "lazyvim.plugins.extras.dap.core",
     "lazyvim.plugins.extras.editor.fzf",
+    "lazyvim.plugins.extras.lang.clangd",
     "lazyvim.plugins.extras.lang.python"
   ],
   "install_version": 7,
