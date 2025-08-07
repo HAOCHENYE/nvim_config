@@ -56,7 +56,61 @@ end
 -- vim.keymap.set("n", "<leader>wd", toggle_diff_mode)
 
 -- 将 <leader>bd 映射为关闭当前 buffer 而不关闭窗口
-vim.api.nvim_set_keymap('n', '<leader>bd', ':b# | bd #<CR>', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('n', '<leader>bd', ':b# | bd #<CR>', { noremap = true, silent = true })
+-- Buffer operations
+vim.keymap.set("n", "<leader>bd", function()
+  -- 删除当前缓冲区，同时清除跳转列表
+  local current_bufnr = vim.api.nvim_get_current_buf() -- 获取当前缓冲区的编号
+
+  local jumps_info = vim.fn.getjumplist()
+  local jumplist = jumps_info[1]
+  local last_jump_idx = jumps_info[2]
+
+  local jumps_needed = 0 -- 记录需要执行 Ctrl-o 的次数
+
+  -- vim.print(jumps_info)
+  -- vim.print("current_bufnr = " .. current_bufnr .. ", current_jump_idx = " .. last_jump_idx)
+
+  -- 从当前位置开始向前遍历跳转列表
+  -- 注意：jumplist 是从最新到最旧排列的，但索引可能在中间
+  -- 我们需要从 current_jump_idx 开始向前查找
+  for i = last_jump_idx, 0, -1 do -- 从当前索引向前遍历
+    -- vim.print("i = " .. i)
+    if jumplist[i] then
+      local jump_bufnr = jumplist[i].bufnr
+      -- vim.print("bufnr = " .. jump_bufnr)
+
+      -- 比较 bufnr，以确保是“不同”的 buffer
+      if jump_bufnr ~= current_bufnr then
+        jumps_needed = last_jump_idx + 1 - i -- 当前位置不在 jumplist 中，需要 +1
+        break -- 找到第一个不同的文件，跳出循环
+      end
+    end
+  end
+
+  if jumps_needed ~= 0 then
+    -- 找到了上一个不同的文件
+    print("Found previous file in jump list. Performing " .. jumps_needed .. " jumps.")
+
+    local function perform_jumps_and_bd(count)
+      if count > 0 then
+        vim.api.nvim_input("<C-o>")
+        vim.defer_fn(function()
+          perform_jumps_and_bd(count - 1)
+        end, 0)
+      else
+        vim.cmd("bd #")
+      end
+    end
+
+    perform_jumps_and_bd(jumps_needed)
+  else
+    -- 如果没有找到上一个不同的文件，则直接删除当前缓冲区
+    print("No previous different file found in jump list. Deleting current buffer.")
+    vim.cmd("bd")
+  end
+  -- vim.print("==== Finished ====")
+end, { noremap = true, silent = true })
 
 
 -- Fzflua 相关的配置
