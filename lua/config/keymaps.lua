@@ -33,26 +33,6 @@ end
 -- vim.keymap.set('n', '<leader>tq', '<cmd>Neotree close<CR>')
 vim.keymap.set("n", "<leader>cp", copy_file_path_to_clipboard)
 
-
--- 检查当前是否在差异模式
-local function is_diff_mode()
-    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-        if vim.api.nvim_win_get_option(win, 'diff') then
-            return true
-        end
-    end
-    return false
-end
-
--- 定义切换差异模式的函数
-local function toggle_diff_mode()
-    if is_diff_mode() then
-        vim.cmd('windo diffoff')
-    else
-        vim.cmd('windo diffthis')
-    end
-end
-
 -- vim.keymap.set("n", "<leader>wd", toggle_diff_mode)
 
 -- 将 <leader>bd 映射为关闭当前 buffer 而不关闭窗口
@@ -200,12 +180,7 @@ vim.api.nvim_set_keymap('n', '<M-j>', "<cmd>m .+1<CR>==", opts)
 -- 重新绑定 C-i 到 Alt-l
 -- vim.api.nvim_set_keymap('n', '<A-l>', '<C-i>', { noremap = true, silent = true })
 --------------------------------------------------------
-vim.keymap.del('n', '<C-/>')
-vim.keymap.del('n', '<C-_>')
 vim.keymap.del('n', '<leader>wd')  -- 关闭 leader wd 关闭 window 的功能
-vim.keymap.del('n', '<leader>ft')
-vim.keymap.set('n', '<C-/>', '<cmd>ToggleTerm size=25<CR>')
-vim.keymap.set('n', '<C-_>', '<cmd>ToggleTerm size=25<CR>')
 --------------------------------------------------------
 local function switch_to_previous_buffer()
   -- Get the name of the previous buffer

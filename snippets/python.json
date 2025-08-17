@@ -1,21 +1,48 @@
 {
-  "green": {
-    "prefix": "cg",
-    "body": [
-      "\\033[32m$0\\033[0m"
-    ]
-  },
-  "red": {
-    "prefix": "cr",
-    "body": [
-      "\\033[31m$0\\033[0m"
-    ]
-  },
-  "yellow": {
-    "prefix": "cy",
-    "body": [
-      "\\033[33m$0\\033[0m"
-    ]
-  }
+    "green": {
+        "prefix": "cg",
+        "body": [
+            "\\033[32m$0\\033[0m"
+        ]
+    },
+    "red": {
+        "prefix": "cr",
+        "body": [
+            "\\033[31m$0\\033[0m"
+        ]
+    },
+    "yellow": {
+        "prefix": "cy",
+        "body": [
+            "\\033[33m$0\\033[0m"
+        ]
+    },
+    "main": {
+        "prefix": [
+            "main"
+        ],
+        "body": [
+            "${1:def main():|}",
+            "if __name__ == '__main__':",
+            "\t${0:main()}"
+        ],
+        "description": "add main function"
+    },
+    "argparse": {
+        "prefix": [
+            "argparse"
+        ],
+        "body": [
+            "import argparse",
+            "",
+            "def get_args():",
+            "\tparser = argparse.ArgumentParser(description='${1:None}')",
+            "\tparser.add_argument('${2:argname}')",
+            "\n",
+            "\targs = parser.parse_args()",
+            "\treturn args",
+            ""
+        ],
+        "description": "add argument parser"
+    }
 }
-
