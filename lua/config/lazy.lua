@@ -26,7 +26,6 @@ require("lazy").setup({
     { import = "plugins.editor" },
     { import = "plugins.git" },
     { import = "plugins.lint" },
-    { import = "plugins.mason-workaround" },
     { import = "plugins.terminal" },
     { import = "plugins.custom.translate" },
   },
