@@ -17,6 +17,14 @@
             "\\033[33m$0\\033[0m"
         ]
     },
+    "debugpy": {
+      "prefix": "deb",
+      "body": [
+        "import debugpy",
+        "debugpy.listen(('0.0.0.0', 5678))",
+        "debugpy.wait_for_client()"
+      ]
+    },
     "main": {
         "prefix": [
             "main"
