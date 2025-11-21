@@ -16,14 +16,14 @@ return {
       end
 
     -- Configure mypy args
-    local mypy_new_args = {
-      "--follow-imports=skip",
-      "--config-file=" .. os.getenv("HOME") .. "/.mypy.ini",
-    }
-    local mypy_args = require("lint").linters.mypy.args
-    for _, arg in ipairs(mypy_new_args) do
-      table.insert(mypy_args, arg)
-    end
+    -- local mypy_new_args = {
+    --   "--follow-imports=skip",
+    --   "--config-file=" .. os.getenv("HOME") .. "/.mypy.ini",
+    -- }
+    -- local mypy_args = require("lint").linters.mypy.args
+    -- for _, arg in ipairs(mypy_new_args) do
+    --   table.insert(mypy_args, arg)
+    -- end
 
       vim.diagnostic.config({ virtual_text = false, float = { source = true } }, mypy)
       vim.diagnostic.config({ virtual_text = false, float = { source = true } }, flake8)
