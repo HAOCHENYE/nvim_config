@@ -27,7 +27,9 @@ require("lazy").setup({
     { import = "plugins.git" },
     { import = "plugins.lint" },
     { import = "plugins.terminal" },
+    -- custom plugins
     { import = "plugins.custom.translate" },
+    { import = "plugins.dap.typescript" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
