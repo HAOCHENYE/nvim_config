@@ -21,6 +21,7 @@ return {
       require("copilot").setup({
         filetypes = {
           markdown = true,
+          octo = true,
         },
         suggestion = {
           enabled = true,

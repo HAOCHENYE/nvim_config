@@ -105,6 +105,16 @@ return {
       lazy = false,
       priority = 49,
   },
+  {
+    "pwntester/octo.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function ()
+      require"octo".setup()
+    end
+  }
 },
   -- {
   --   "iamcco/markdown-preview.nvim",
