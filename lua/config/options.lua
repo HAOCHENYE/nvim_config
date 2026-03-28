@@ -19,3 +19,10 @@ vim.opt.writebackup = false
 vim.opt.foldmethod='indent'
 vim.opt.colorcolumn='120'
 vim.g.ai_cmp = false
+
+
+vim.opt.diffopt:append({
+  "algorithm:patience",
+  "indent-heuristic",
+  "linematch:100",      -- Neovim 0.9+ 行匹配优化
+})
