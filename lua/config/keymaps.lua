@@ -293,3 +293,56 @@ function SearchInVisualSelection()
   end)
 end
 
+
+
+-- Helper: 获取当前文件相对于 cwd 的路径
+local function get_relative_filepath()
+  return vim.fn.expand("%:.")
+end
+-- Normal 模式：复制 "path/to/file:L123"
+vim.keymap.set('n', '<Leader>cP', function()
+  local line_num = vim.api.nvim_win_get_cursor(0)[1]
+  local rel_path = get_relative_filepath()
+  if rel_path == "" then
+    vim.notify("Failed to get relative path", vim.log.levels.WARN)
+    return
+  end
+  local text = rel_path .. ":L" .. line_num
+  vim.fn.setreg('+', text)
+  vim.notify('Yanked: ' .. text, { title = "Line Number" })
+end, { desc = 'Copy file:Lline to + register' })
+
+-- Visual 模式：复制 "path/to/file:L123-125"
+vim.keymap.set('v', '<Leader>cP', function()
+  local start_line = vim.fn.line('v')
+  local end_line = vim.fn.line('.')
+  if start_line > end_line then
+    start_line, end_line = end_line, start_line
+  end
+  local rel_path = get_relative_filepath()
+  if rel_path == "" then
+    vim.notify("Failed to get relative path", vim.log.levels.WARN)
+    return
+  end
+  local text = rel_path .. ":L" .. start_line .. (start_line == end_line and "" or "-" .. end_line)
+  vim.fn.setreg('+', text)
+  vim.notify('Yanked: ' .. text, { title = "Line Range" })
+end, { desc = 'Copy file:Lstart-end to + register' })
+
+
+
+-- Disable LazyVim global kaymap
+-- 使用 pcall 来安全地删除可能不存在的键位映射
+pcall(vim.keymap.del, 'n', '<c-/>')
+pcall(vim.keymap.del, 't', '<c-/>')
+pcall(vim.keymap.del, 'n', '<c-_>')
+pcall(vim.keymap.del, 't', '<c-_>')
+
+-- 重新绑定到 ToggleTerm，使用 remap = true 来覆盖已有的映射
+vim.keymap.set({'n', 'v', 'i', 't'}, '<c-/>', '<cmd>ToggleTerm<cr>', { noremap = true, silent = true, desc = "Toggle Terminal" })
+vim.keymap.set({'n', 'v', 'i', 't'}, '<c-_>', '<cmd>ToggleTerm<cr>', { noremap = true, silent = true, desc = "Toggle Terminal" })
+
+
+vim.keymap.set("n", "*", "*N", { desc = "Search word without jump" })
+vim.keymap.set("n", "#", "#N", { desc = "Search word backward without jump" })
+

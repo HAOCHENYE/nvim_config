@@ -114,6 +114,41 @@ return {
     config = function ()
       require"octo".setup()
     end
+  },
+  {
+    "folke/snacks.nvim",
+    opts = {
+      scroll = {
+        enabled = false,
+      },
+    },
+    keys = {
+      {
+        "<leader>sb",
+        function()
+          local Snacks = require("snacks")
+          Snacks.picker.grep({
+            need_search = false,
+            args = { "--max-columns=10000" },
+            dirs = { vim.api.nvim_buf_get_name(0) },
+            layout = {
+              preset = "ivy",
+              auto_hide = { "preview" },
+            },
+            format = function(item)
+              local ret = { { string.format("%s: ", item.pos[1]), "Conceal" } }
+              Snacks.picker.highlight.format(item, item.line, ret)
+              return ret
+            end,
+          })
+        end,
+        desc = "Snacks grep in current file",
+      },
+      -- {
+      --   "<c-/>",
+      --   function() Snacks.terminal() end, { desc = "Terminal (cwd)" }
+      -- }
+    },
   }
 },
   -- {

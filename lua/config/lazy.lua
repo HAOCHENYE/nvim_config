@@ -27,6 +27,7 @@ require("lazy").setup({
     { import = "plugins.git" },
     { import = "plugins.lint" },
     { import = "plugins.terminal" },
+    { import = "plugins.theme" },
     -- custom plugins
     { import = "plugins.custom.translate" },
     { import = "plugins.dap.typescript" },
