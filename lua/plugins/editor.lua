@@ -151,17 +151,17 @@ return {
     },
   }
 },
-  -- {
-  --   "iamcco/markdown-preview.nvim",
-  --   init = function()
-  --     vim.g.mkdp_echo_preview_url = 1
-  --     vim.g.mkdp_port = "8879"
-  --   end,
-  --   cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-  --   ft = { "markdown" },
-  --   -- if markdown-preview does not work, maybe need to call `call mkdp#util#install` again in nvim
-  --   build = function()
-  --     vim.fn["mkdp#util#install"]()
-  --   end,
-  -- },
+  {
+    "iamcco/markdown-preview.nvim",
+    init = function()
+      vim.g.mkdp_echo_preview_url = 1
+      vim.g.mkdp_port = "8879"
+    end,
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    -- if markdown-preview does not work, maybe need to call `call mkdp#util#install` again in nvim
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+  },
 }
