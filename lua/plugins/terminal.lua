@@ -45,9 +45,15 @@ return {
         hidden = true,
       })
 
+      local float_term_alt = Terminal:new({
+        direction = "float",
+        hidden = true,
+      })
+
       local map = vim.keymap.set
       map({ "n", "t" }, "<C-/>", function() horizontal_term:toggle() end, { desc = "Horizontal terminal" })
       map({ "n", "t" }, "<M-/>", function() float_term:toggle() end, { desc = "Float terminal" })
+      map({ "n", "t" }, "<M-.>", function() float_term_alt:toggle() end, { desc = "Float terminal alt" })
     end,
   },
 }
